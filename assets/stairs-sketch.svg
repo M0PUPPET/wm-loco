@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="320" viewBox="0 0 512 320" fill="none">
+  <!-- Three steps, left to right ascending -->
+  <path
+    stroke="#edf3ee"
+    stroke-width="16"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    d="
+      M64 250
+      H200 V150
+      H336 V50
+      H448
+    "
+  />
+</svg>

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>WM-LOCO: World Model Augmented Visual Locomotion for Humanoids</title>
-  <meta name="description" content="WM-LOCO co-trains a recurrent world model with PPO for humanoid locomotion on foothold-constrained terrain from a single onboard depth stream." />
+  <title>WM-LOCO: World-Model-Augmented Visual Locomotion for Humanoids</title>
+  <meta name="description" content="WM-LOCO jointly trains a recurrent world model and a PPO policy for humanoid locomotion on foothold-constrained terrain from a single onboard depth image." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet" />
@@ -41,27 +41,26 @@
         <div class="hero-copy">
           <h1>
             <span class="brand-mark">WM-LOCO</span>
-            <span class="hero-title">World Model Augmented Visual Locomotion for Humanoids on Foothold-Constrained Terrain</span>
+            <span class="hero-title">World-Model-Augmented Visual Locomotion for Humanoids on Foothold-Constrained Terrain</span>
           </h1>
 
           <ul class="authors">
             <li>Yuxi Liu<sup>1</sup></li>
-            <li>Lijun Han<sup>1,2</sup></li>
-            <li>Ziming Wang<sup>1,3</sup></li>
+            <li>Lijun Han<sup>1,*</sup></li>
+            <li>Ziming Wang<sup>1,2</sup></li>
             <li>Ao Zhang<sup>1</sup></li>
-            <li>Cong Yang<sup>4</sup></li>
+            <li>Cong Yang<sup>3</sup></li>
             <li>Wei Sui<sup>1,†</sup></li>
           </ul>
           <p class="affiliations">
             <sup>1</sup>D-Robotics &nbsp;·&nbsp;
-            <sup>2</sup>Institute of Automation, Chinese Academy of Sciences &nbsp;·&nbsp;
-            <sup>3</sup>Beijing University of Posts and Telecommunications &nbsp;·&nbsp;
-            <sup>4</sup>Soochow University
+            <sup>2</sup>Beijing University of Posts and Telecommunications &nbsp;·&nbsp;
+            <sup>3</sup>Soochow University
           </p>
-          <p class="author-note">†Corresponding author: <a href="mailto:wei.sui@d-robotics.cc">wei.sui@d-robotics.cc</a></p>
+          <p class="author-note">*Equal contribution. &nbsp;·&nbsp; †Project lead and corresponding author: <a href="mailto:wei.sui@d-robotics.cc">wei.sui@d-robotics.cc</a></p>
 
           <p class="tldr">
-            A co-trained recurrent world model gives a future-aware contact prior to PPO from a single onboard depth image—no foothold labels, no terrain map—so a Unitree G1 can clear gaps, stairs, and stepping stones in sim and on hardware.
+            A recurrent world model, jointly trained with PPO, turns proprioception and a single onboard depth image into a predictive recurrent feature—no foothold labels, no terrain map—so a Unitree G1 clears gaps, stairs, and stepping stones in simulation and onboard, at 93.3% average success on hardware.
           </p>
 
           <div class="cta-row">
@@ -89,17 +88,17 @@
       <div class="container narrow">
         <div class="section-head">
           <h2>Abstract</h2>
-          <p class="lead">One predictive latent, one depth stream, three sparse foothold classes.</p>
+          <p class="lead">One predictive recurrent feature, one depth stream, three foothold-constrained classes.</p>
         </div>
         <div class="prose">
           <p>
-            Foothold-constrained terrain is ground where feasible foot contacts are sparse, discontinuous, or geometrically restricted—stepping stones, gaps, and narrow stair treads. On such terrain, one bad step often leaves little room to recover, so reactive policies that rely only on the immediately visible foothold tend to fail.
+            Foothold-constrained terrain is characterized by sparse, discontinuous, or geometrically restricted feasible foot contacts, as encountered on stepping stones, across gaps, and on narrow stair treads. On such terrain, a single misstep often leaves little room to recover, so policies that base foot-placement decisions primarily on the immediately visible terrain are prone to failure. We ask whether a learned predictive summary of near-future observations and rewards can provide the anticipatory information required in such settings.
           </p>
           <p>
-            We present <strong>World Model Augmented Visual Locomotion (WM-LOCO)</strong>, which co-trains a recurrent world model with PPO end-to-end. Conditioned on proprioception and a single onboard depth image, the world model forms a predictive latent that guides the policy as a future-aware contact prior, without explicit foothold labels.
+            We present <strong>World-Model-Augmented Visual Locomotion (WM-LOCO)</strong>, which jointly trains a recurrent world model and a PPO policy. Conditioned on proprioception and a single onboard depth image, the world model produces a predictive recurrent feature that guides the policy, without explicit foothold labels.
           </p>
           <p>
-            In simulation, WM-LOCO succeeds on gaps and stepping stones where a matched baseline fails completely, and matches stair success while improving stride efficiency and reducing pelvis acceleration. The same method deploys onboard a physical humanoid from depth alone and traverses all three terrain classes with an average success rate of 95%.
+            In simulation, WM-LOCO succeeds on gaps and stepping stones where a matched baseline fails completely, and matches the baseline's success rate on stairs while improving stride efficiency and reducing pelvis acceleration. We deploy the same policy onboard a physical Unitree G1 humanoid using onboard proprioception and a single depth stream; it traverses all three terrain classes with an average success rate of 93.3%.
           </p>
         </div>
         <ul class="keywords">
@@ -115,7 +114,7 @@
       <div class="container">
         <div class="section-head">
           <h2>Method</h2>
-          <p>A recurrent world model co-trained with PPO as a future-aware contact prior.</p>
+          <p>A recurrent world model jointly trained with PPO, supplying a predictive recurrent feature to the actor–critic.</p>
         </div>
 
         <div class="method-grid">
@@ -123,28 +122,28 @@
             <span class="method-index">01</span>
             <h3>Problem</h3>
             <p>
-              Locomotion as a POMDP: proprioception history, egocentric depth, and velocity command. Foothold-constrained terrain makes a single infeasible step nearly irreversible for bipeds.
+              Locomotion as a POMDP. At each control step the policy observes a 5-frame proprioception history (joint positions, joint velocities, inertial measurements, previous action), a depth image from a single head-mounted camera, and a commanded base-frame velocity. It tracks the command while traversing the terrain and avoiding non-foot contacts; where feasible contacts are sparse, one infeasible step can leave little room to recover before a fall.
             </p>
           </article>
           <article class="method-item reveal">
             <span class="method-index">02</span>
             <h3>World Model</h3>
             <p>
-              Recurrent state-space model with memory h<sub>t</sub> and stochastic latent z<sub>t</sub>. Reconstructs proprioception, depth, and reward; the KL term keeps the prior close to the posterior, so h<sub>t</sub> stays predictive before the current observation arrives.
+              A recurrent state-space model (RSSM) with deterministic memory h<sub>t</sub> and a 128-dimensional stochastic latent z<sub>t</sub>: a transition updates the memory with the last action, a posterior infers z<sub>t</sub> from the memory and the current observation, a prior predicts z<sub>t</sub> from the memory alone, and decoders reconstruct proprioception, depth, and reward. The KL term regularizes the prior toward the posterior, so h<sub>t</sub> retains information useful for predicting the latent before the current observation arrives.
             </p>
           </article>
           <article class="method-item reveal">
             <span class="method-index">03</span>
             <h3>Joint Training</h3>
             <p>
-              Optimize PPO clipped surrogate together with L<sub>WM</sub> in one update. Only the deterministic memory h<sub>t</sub>—not the stochastic latent z<sub>t</sub>—reaches the policy, as f<sup>WM</sup><sub>t</sub> alongside its own proprioception history, command, and depth inputs. No imagination rollouts at inference, no foothold labels.
+              The PPO clipped surrogate and L<sub>WM</sub> are optimized in a single joint update—no separate pretraining stage, no offline replay buffer—with world-model gradients propagating into the shared depth and proprioceptive encoders. Only the memory reaches the policy, as f<sup>WM</sup><sub>t</sub> = g<sub>ψ</sub>(h<sub>t</sub>), alongside its own proprioception history, command, and depth inputs. Inference requires no imagined rollouts, and no foothold labels are used.
             </p>
           </article>
           <article class="method-item reveal">
             <span class="method-index">04</span>
             <h3>Reward Shaping</h3>
             <p>
-              Shared stair-boundary, riser-penetration, and sequential tread-contact terms teach legal contacts without giving the baseline a different objective than WM-LOCO.
+              A standard velocity-tracking objective is too sparse here, so terrain-specific shaping terms are added—identically for WM-LOCO and PPO within each terrain-training setting—computed from a foot volume-point set following the sensor design of Hiking in the Wild. Stairs use a boundary penalty, a riser-penetration penalty, and a sequential tread-contact reward; stepping stones use a separate parallel formulation in which every valid stone top is active at reset and consumed independently after qualifying contact.
             </p>
           </article>
         </div>
@@ -153,14 +152,14 @@
           <figure class="framework-figure">
             <img
               src="assets/figure3.png"
-              alt="WM-LOCO framework: a policy block on the left and a Dreamer-style world-model block on the right"
+              alt="WM-LOCO framework: a policy block on the left and an RSSM world-model block on the right"
             />
           </figure>
           <p class="media-caption">
-            Figure 3 · WM-LOCO framework: a policy block (left) and a Dreamer-style world-model block (right).
+            Figure 2 · The WM-LOCO framework: a policy block (left) and an RSSM world-model block (right).
             The policy consumes its own proprioception history, velocity command, and depth image together with
-            the world-model memory feature f<sup>WM</sup><sub>t</sub>. The PPO baseline removes only the
-            world-model block.
+            the world-model feature f<sup>WM</sup><sub>t</sub>; a mixture-of-experts backbone fuses them and feeds
+            the actor and critic heads. The PPO baseline omits only the world-model pathway and its auxiliary loss.
           </p>
         </div>
       </div>
@@ -170,7 +169,7 @@
       <div class="container">
         <div class="section-head">
           <h2>Quantitative Results</h2>
-          <p>Success rates in IsaacLab simulation at three difficulty levels, with push and domain randomization detached.</p>
+          <p>Success rates in IsaacLab simulation at three difficulty tiers, with external push perturbations and domain randomization disabled.</p>
         </div>
 
         <div class="stat-strip reveal">
@@ -183,8 +182,8 @@
             <span>Stepping stones, WM-LOCO vs PPO</span>
           </div>
           <div class="stat">
-            <strong>95%</strong>
-            <span>Onboard average success on hardware</span>
+            <strong>93.3%</strong>
+            <span>Onboard average success, 10 trials per class</span>
           </div>
           <div class="stat">
             <strong>+15–35%</strong>
@@ -194,7 +193,7 @@
 
         <div class="chart-grid">
           <article class="chart-card reveal">
-            <p class="chart-kicker">Least constrained · riser 9.2 / 12.8 / 18.8 cm</p>
+            <p class="chart-kicker">Least constrained · riser 9.2–10.4 / 12.8–14.0 / 18.8–20.0 cm</p>
             <h3>Stairs</h3>
             <div class="bar-chart" data-chart="stairs"></div>
           </article>
@@ -204,7 +203,7 @@
             <div class="bar-chart" data-chart="gap"></div>
           </article>
           <article class="chart-card reveal">
-            <p class="chart-kicker">Most constrained · stone edge 33 / 30 / 25 cm</p>
+            <p class="chart-kicker">Most constrained · stone edge 33–34 / 30–31 / 25–26 cm</p>
             <h3>Stepping Stones</h3>
             <div class="bar-chart" data-chart="stones"></div>
           </article>
@@ -222,33 +221,48 @@
                 <th>Difficulty</th>
                 <th>PPO ↑</th>
                 <th class="best-col">WM-LOCO ↑</th>
+                <th>Real ↑</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td rowspan="3">Stairs</td><td>Easy</td><td>87.0%</td><td class="best">94.2%</td></tr>
+              <tr><td rowspan="3">Stairs</td><td>Easy</td><td>87.0%</td><td class="best">94.2%</td><td rowspan="3">90%</td></tr>
               <tr><td>Medium</td><td>91.4%</td><td class="best">95.7%</td></tr>
               <tr><td>Hard</td><td>91.3%</td><td class="best">92.0%</td></tr>
-              <tr><td rowspan="3">Gap</td><td>Easy</td><td>0.0%</td><td class="best">98.0%</td></tr>
+              <tr><td rowspan="3">Gap</td><td>Easy</td><td>0.0%</td><td class="best">98.0%</td><td rowspan="3">90%</td></tr>
               <tr><td>Medium</td><td>0.0%</td><td class="best">100.0%</td></tr>
               <tr><td>Hard</td><td>0.0%</td><td class="best">90.0%</td></tr>
-              <tr><td rowspan="3">Stepping stones</td><td>Easy</td><td>0.0%</td><td class="best">87.0%</td></tr>
+              <tr><td rowspan="3">Stepping stones</td><td>Easy</td><td>0.0%</td><td class="best">87.0%</td><td rowspan="3">100%</td></tr>
               <tr><td>Medium</td><td>0.0%</td><td class="best">88.3%</td></tr>
               <tr><td>Hard</td><td>0.0%</td><td class="best">78.2%</td></tr>
             </tbody>
           </table>
           <p class="media-caption">
-            Table 1 · Simulation success rate (center of mass crossed the goal line within 45 s), best per row highlighted.
-            Each cell is a single pinned-difficulty evaluation with push and domain randomization detached, at least 50 episodes
-            per (method, terrain, difficulty). On gaps and stairs, PPO is the architecturally matched baseline; on stepping
-            stones it is the no-world-model ablation of the same architecture. On both sparse classes it never reaches the goal.
+            Table 1 · Success rates in simulation and on the physical Unitree G1. An episode counts as a success if the
+            robot's center of mass crosses the goal line within 45 s; the better of PPO / WM-LOCO is highlighted. Each
+            simulation cell fixes the terrain at one difficulty tier with external push perturbations and domain
+            randomization disabled, over at least 50 episodes per (method, terrain, difficulty). The PPO baseline shares
+            the reward, perception stream, proprioceptive encoder, AMP motion prior, MoE actor–critic, and iteration
+            budget, and omits only the world-model pathway and its auxiliary loss. Real = success over 10 hardware trials
+            per terrain class.
+          </p>
+        </div>
+
+        <div class="gait-block reveal">
+          <h3>Failure modes on stepping stones and gaps</h3>
+          <p>
+            WM-LOCO succeeds in 78.2–88.3% of stepping-stone episodes; when it fails, the dominant mode is an illegal
+            foothold (23.0%, aggregated over tiers) rather than a fall (1.9%). Baseline failures are mostly falls (61.0%)
+            or lack of progress (36.0%), often within the first few contacts near the beginning of an episode. Gaps show a
+            similar pattern: the baseline stays at 0% across tiers, while WM-LOCO remains at or above 90%.
           </p>
         </div>
 
         <div class="gait-block reveal">
           <h3>Gait quality on stairs</h3>
           <p>
-            On stairs both methods reach similar success rates, but WM-LOCO walks more efficiently and more smoothly.
-            Gains below are relative to PPO across Easy / Medium / Hard.
+            On stairs both methods reach similar success rates, but they differ in gait quality: WM-LOCO takes longer
+            strides, fewer steps per metre, and lowers pelvis acceleration. Ranges below are relative to PPO across the
+            Easy / Medium / Hard tiers.
           </p>
           <div class="gait-metrics">
             <div class="gait-metric">
@@ -265,7 +279,7 @@
             </div>
             <div class="gait-metric">
               <span class="gait-delta down">−6% to −20%</span>
-              <span class="gait-label">CoT proxy</span>
+              <span class="gait-label">Normalized mechanical energy</span>
             </div>
           </div>
         </div>
@@ -281,15 +295,15 @@
         <div class="hardware-grid">
           <article class="hw-item reveal">
             <h3>Platform</h3>
-            <p>Unitree G1 · Intel RealSense D435-modelled depth · Jetson Orin · no offboard map or estimator.</p>
+            <p>Unitree G1 · single head-mounted Intel RealSense D435 depth stream · policy exported to ONNX and run fully onboard a Jetson Orin · no offboard perception, precomputed terrain map, or additional state estimator.</p>
           </article>
           <article class="hw-item reveal">
             <h3>Terrains</h3>
-            <p>Stepping stones (0.25–0.30 m top faces), stairs (0.15 m riser / 0.25 m tread), and a 0.8 m gap.</p>
+            <p>Stepping stones with 0.25 m top surfaces and 0.45 m longitudinal gaps, stairs with 0.15 m risers and 0.25 m treads, and a 0.8 m gap.</p>
           </article>
           <article class="hw-item reveal">
             <h3>Outcome</h3>
-            <p>Reproduces simulated contact behavior across the three classes on the physical Unitree G1, with a 95% average success rate. Larger gaps were not tested, for safety.</p>
+            <p>Contact patterns match simulation across all three classes, at a 93.3% average success rate over 10 trials per class — stepping stones 100%, stairs 90%, gap 90%. Larger gaps were not tested, for safety.</p>
           </article>
         </div>
 
@@ -306,7 +320,7 @@
               <span class="badge">Figure 1a</span>
               <div>
                 <h3>Stepping stones</h3>
-                <p>Discrete pads with 0.25–0.30 m top faces. Policy lands on legal footholds without visible misses.</p>
+                <p>Discrete pads with 0.25 m top surfaces and 0.45 m longitudinal gaps, traversed without observed foot-placement failures.</p>
               </div>
             </div>
           </div>
@@ -316,7 +330,7 @@
               <span class="badge">Figure 1b</span>
               <div>
                 <h3>Stairs</h3>
-                <p>0.15 m risers and 0.25 m treads. Foot clears each riser and lands flat without extra tuning.</p>
+                <p>0.15 m risers and 0.25 m treads. The robot negotiates each riser and places each foot flat on the tread without additional tuning.</p>
               </div>
             </div>
           </div>
@@ -326,13 +340,13 @@
               <span class="badge">Figure 1c</span>
               <div>
                 <h3>0.8 m gap</h3>
-                <p>One-step clearance matching the simulated swing-and-land behavior.</p>
+                <p>Traversed in a single step, with a swing-and-landing pattern similar to that observed in simulation.</p>
               </div>
             </div>
           </div>
         </div>
         <p class="media-caption">
-          Onboard deployment of trained WM-LOCO on Unitree G1 across the three foothold-constrained classes covered in this paper.
+          Figure 1 · Hardware deployment of WM-LOCO on a Unitree G1 humanoid across the three foothold-constrained terrain classes studied in the paper. The policy runs from a single onboard depth stream, with no offboard perception and no terrain map.
         </p>
 
         <div class="launch-demo">
@@ -372,7 +386,7 @@
         <div class="cite-box">
           <button class="copy-btn" type="button" data-copy>Copy</button>
           <pre id="bibtex"><code>@misc{liu2026wmloco,
-  title         = {World Model Augmented Visual Locomotion for
+  title         = {World-Model-Augmented Visual Locomotion for
                    Humanoids on Foothold-Constrained Terrain},
   author        = {Liu, Yuxi and Han, Lijun and Wang, Ziming and
                    Zhang, Ao and Yang, Cong and Sui, Wei},

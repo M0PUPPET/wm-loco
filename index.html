@@ -23,7 +23,6 @@
         <a href="#abstract">Abstract</a>
         <a href="#method">Method</a>
         <a href="#results">Results</a>
-        <a href="#sim2real">Sim2Real</a>
         <a href="#citation">Citation</a>
       </div>
       <div class="org-badge" aria-label="D-Robotics">
@@ -153,6 +152,39 @@
             </figcaption>
           </figure>
         </div>
+
+        <div class="sim2real-block" id="sim2real">
+          <div class="section-head">
+            <h3>Sim-to-Real</h3>
+            <p>
+              The trained policy is exported to ONNX and runs fully onboard the robot, from proprioception and a single
+              head-mounted depth stream — no offboard perception, no precomputed terrain map, no extra state estimator.
+            </p>
+          </div>
+
+          <div class="hardware-grid">
+            <article class="hw-item reveal">
+              <h3>Platform</h3>
+              <p>Unitree G1 · single head-mounted Intel RealSense D435 depth stream · ONNX policy running onboard a Jetson AGX Orin for the results reported in the paper.</p>
+            </article>
+            <article class="hw-item reveal">
+              <h3>Terrains</h3>
+              <p>Stepping stones with 0.25 m top surfaces and 0.45 m longitudinal gaps, stairs with 0.15 m risers and 0.25 m treads, and a 0.8 m gap.</p>
+            </article>
+            <article class="hw-item reveal">
+              <h3>Outcome</h3>
+              <p>Contact patterns match simulation across all three classes, at a 93.3% average success rate over 10 trials per class — stepping stones 100%, stairs 90%, gap 90%.</p>
+            </article>
+          </div>
+
+          <p class="media-caption">
+            On the stones the robot traverses the pads without observed foot-placement failures; on stairs it negotiates
+            each riser and places each foot flat on the tread without additional tuning; the 0.8 m gap is cleared in a
+            single step, with a swing-and-landing pattern similar to that observed in simulation. Larger gaps were not
+            tested, for safety.
+          </p>
+        </div>
+
       </div>
     </section>
 
@@ -353,96 +385,6 @@
               <span class="gait-delta down">−6% to −20%</span>
               <span class="gait-label">Normalized mechanical energy</span>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section alt" id="sim2real" aria-labelledby="sim2real-title">
-      <div class="container">
-        <div class="section-head">
-          <h2 id="sim2real-title">Sim-to-Real</h2>
-        </div>
-
-        <div class="hardware-grid">
-          <article class="hw-item reveal">
-            <h3>Platform</h3>
-            <p>Unitree G1 · single head-mounted Intel RealSense D435 depth stream · policy exported to ONNX and run fully onboard a Jetson Orin · no offboard perception, precomputed terrain map, or additional state estimator.</p>
-          </article>
-          <article class="hw-item reveal">
-            <h3>Terrains</h3>
-            <p>Stepping stones with 0.25 m top surfaces and 0.45 m longitudinal gaps, stairs with 0.15 m risers and 0.25 m treads, and a 0.8 m gap.</p>
-          </article>
-          <article class="hw-item reveal">
-            <h3>Outcome</h3>
-            <p>Contact patterns match simulation across all three classes, at a 93.3% average success rate over 10 trials per class — stepping stones 100%, stairs 90%, gap 90%. Larger gaps were not tested, for safety.</p>
-          </article>
-        </div>
-
-        <div class="scene-tabs" role="tablist" aria-label="Terrain scenes">
-          <button class="scene-tab is-active" type="button" data-scene="stones" role="tab" aria-selected="true">Stepping Stones</button>
-          <button class="scene-tab" type="button" data-scene="stairs" role="tab" aria-selected="false">Stairs</button>
-          <button class="scene-tab" type="button" data-scene="gap" role="tab" aria-selected="false">Gap</button>
-        </div>
-
-        <div class="media-frame">
-          <div class="media-panel" data-panel="stones">
-            <img src="assets/real-stones.png" alt="Unitree G1 motion sequence on stepping stones" />
-            <div class="media-meta">
-              <span class="badge">Figure 1a</span>
-              <div>
-                <h3>Stepping stones</h3>
-                <p>Discrete pads with 0.25 m top surfaces and 0.45 m longitudinal gaps, traversed without observed foot-placement failures.</p>
-              </div>
-            </div>
-          </div>
-          <div class="media-panel is-hidden" data-panel="stairs">
-            <img src="assets/real-stairs.png" alt="Unitree G1 motion sequence ascending and descending stairs" />
-            <div class="media-meta">
-              <span class="badge">Figure 1b</span>
-              <div>
-                <h3>Stairs</h3>
-                <p>0.15 m risers and 0.25 m treads. The robot negotiates each riser and places each foot flat on the tread without additional tuning.</p>
-              </div>
-            </div>
-          </div>
-          <div class="media-panel is-hidden" data-panel="gap">
-            <img src="assets/real-gap.png" alt="Unitree G1 motion sequence clearing a gap between platforms" />
-            <div class="media-meta">
-              <span class="badge">Figure 1c</span>
-              <div>
-                <h3>0.8 m gap</h3>
-                <p>Traversed in a single step, with a swing-and-landing pattern similar to that observed in simulation.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <p class="media-caption">
-          Figure 1 · Hardware deployment of WM-LOCO on a Unitree G1 humanoid across the three foothold-constrained terrain classes studied in the paper. The policy runs from a single onboard depth stream, with no offboard perception and no terrain map.
-        </p>
-
-        <div class="launch-demo">
-          <div class="section-head">
-            <h3>D-Robotics S600 Launch Demo</h3>
-            <p>
-              We deployed WM-LOCO on the D-Robotics S600 chip and ran a live stage demo at the S600 launch event —
-              <strong>one of the first public live-stage demonstrations of a humanoid traversing stepping stones</strong>.
-            </p>
-          </div>
-          <div class="video-frame">
-            <video
-              class="demo-video"
-              id="live-demo-video"
-              controls
-              playsinline
-              preload="auto"
-            >
-              <source src="assets/live-demo.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-            <p class="media-caption video-caption">
-              Live stage recording from the D-Robotics S600 launch — Unitree G1 on stepping stones.
-            </p>
           </div>
         </div>
       </div>

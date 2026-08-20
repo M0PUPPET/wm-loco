@@ -49,24 +49,6 @@ function animateBars(root) {
   });
 }
 
-function setupSceneTabs() {
-  const tabs = document.querySelectorAll(".scene-tab");
-  const panels = document.querySelectorAll(".media-panel");
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      const scene = tab.dataset.scene;
-      tabs.forEach((t) => {
-        t.classList.toggle("is-active", t === tab);
-        t.setAttribute("aria-selected", t === tab ? "true" : "false");
-      });
-      panels.forEach((panel) => {
-        panel.classList.toggle("is-hidden", panel.dataset.panel !== scene);
-      });
-    });
-  });
-}
-
 function setupNav() {
   const header = document.querySelector(".site-header");
   const nav = document.querySelector(".nav");
@@ -149,30 +131,7 @@ function setupCopy() {
   });
 }
 
-function setupVideoPoster() {
-  const video = document.getElementById("live-demo-video");
-  if (!video) return;
-
-  const showFirstFrame = () => {
-    if (!video.paused) return;
-    // Seek slightly into the file so the browser paints frame 0 as the cover.
-    const target = Math.min(0.05, (video.duration || 1) * 0.001);
-    if (Math.abs(video.currentTime - target) < 0.001) return;
-    try {
-      video.currentTime = target;
-    } catch {
-      /* ignore seek errors before ready */
-    }
-  };
-
-  if (video.readyState >= 1) showFirstFrame();
-  video.addEventListener("loadedmetadata", showFirstFrame, { once: true });
-  video.addEventListener("loadeddata", showFirstFrame, { once: true });
-}
-
 renderCharts();
-setupSceneTabs();
 setupNav();
 setupReveal();
 setupCopy();
-setupVideoPoster();

@@ -19,6 +19,7 @@
       </a>
       <div class="nav-links">
         <a href="#overview">Overview</a>
+        <a href="#demo">Demo</a>
         <a href="#abstract">Abstract</a>
         <a href="#method">Method</a>
         <a href="#results">Results</a>
@@ -66,21 +67,92 @@
           <div class="cta-row">
             <a class="btn btn-primary" href="#abstract">Tech Report</a>
             <span class="btn" aria-disabled="true">arXiv (coming soon)</span>
-            <a class="btn" href="#sim2real">Live Demo</a>
+            <a class="btn" href="#demo">Live Demo</a>
             <span class="btn" aria-disabled="true">Code (coming soon)</span>
             <a class="btn" href="#citation">BibTeX</a>
           </div>
         </div>
 
         <figure class="hero-visual">
-          <img
-            src="assets/real-stones.png"
-            alt="Unitree G1 traversing stepping stones with WM-LOCO"
-            width="960"
-            height="540"
-          />
-          <figcaption>Onboard G1 · stepping stones</figcaption>
+          <video
+            class="hero-video"
+            src="assets/s600-demo.mp4"
+            poster="assets/s600-demo-poster.jpg"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label="Unitree G1 crossing stepping stones on stage at the D-Robotics S600 launch"
+          ></video>
+          <figcaption>D-Robotics S600 launch · live stage demo</figcaption>
         </figure>
+      </div>
+    </section>
+
+    <section class="section alt" id="demo">
+      <div class="container">
+        <div class="section-head">
+          <h2>Live Demo</h2>
+          <p>Onboard runs on the physical Unitree G1 — one clip per foothold-constrained terrain class, all from a single depth stream.</p>
+        </div>
+
+        <div class="demo-grid">
+          <figure class="demo-card reveal">
+            <video
+              class="demo-clip"
+              src="assets/demo-stones.mp4"
+              poster="assets/demo-stones-poster.jpg"
+              autoplay
+              muted
+              loop
+              playsinline
+              controls
+              preload="metadata"
+              aria-label="Unitree G1 crossing stepping stones"
+            ></video>
+            <figcaption>
+              <h3>Stepping stones</h3>
+              <p>0.25 m top surfaces, 0.45 m longitudinal gaps.</p>
+            </figcaption>
+          </figure>
+          <figure class="demo-card reveal">
+            <video
+              class="demo-clip"
+              src="assets/demo-stairs.mp4"
+              poster="assets/demo-stairs-poster.jpg"
+              autoplay
+              muted
+              loop
+              playsinline
+              controls
+              preload="metadata"
+              aria-label="Unitree G1 ascending and descending stairs"
+            ></video>
+            <figcaption>
+              <h3>Stairs</h3>
+              <p>0.15 m risers, 0.25 m treads, up and down.</p>
+            </figcaption>
+          </figure>
+          <figure class="demo-card reveal">
+            <video
+              class="demo-clip"
+              src="assets/demo-gap.mp4"
+              poster="assets/demo-gap-poster.jpg"
+              autoplay
+              muted
+              loop
+              playsinline
+              controls
+              preload="metadata"
+              aria-label="Unitree G1 clearing a gap between platforms"
+            ></video>
+            <figcaption>
+              <h3>Gap</h3>
+              <p>0.8 m gap, cleared in a single step.</p>
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </section>
 
@@ -219,9 +291,9 @@
               <tr>
                 <th>Terrain</th>
                 <th>Difficulty</th>
-                <th>PPO ↑</th>
-                <th class="best-col">WM-LOCO ↑</th>
-                <th>Real ↑</th>
+                <th>PPO</th>
+                <th class="best-col">WM-LOCO</th>
+                <th>Real</th>
               </tr>
             </thead>
             <tbody>

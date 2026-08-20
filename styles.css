@@ -217,7 +217,8 @@ button {
   pointer-events: none;
 }
 
-.hero-visual img {
+.hero-visual img,
+.hero-visual video {
   width: 100%;
   height: min(52vh, 420px);
   object-fit: cover;
@@ -480,6 +481,50 @@ button {
   padding: 0.8rem 1.1rem 1rem;
   border-top: 1px solid var(--line);
   background: var(--bg-elev);
+}
+
+/* ------------------------------------------------------------- live demo */
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.1rem;
+}
+
+.demo-card {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-elev);
+  box-shadow: var(--shadow);
+}
+
+.demo-clip {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #0d1520;
+}
+
+.demo-card figcaption {
+  padding: 0.85rem 1rem 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.demo-card figcaption h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.02rem;
+  letter-spacing: -0.01em;
+}
+
+.demo-card figcaption p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
 /* --------------------------------------------------------------- sim2real */
@@ -1036,6 +1081,7 @@ pre {
   .method-grid,
   .chart-grid,
   .hardware-grid,
+  .demo-grid,
   .stat-strip {
     grid-template-columns: 1fr;
   }
@@ -1044,7 +1090,8 @@ pre {
     order: -1;
   }
 
-  .hero-visual img {
+  .hero-visual img,
+  .hero-visual video {
     height: min(38vh, 280px);
   }
 

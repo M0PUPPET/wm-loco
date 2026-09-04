@@ -10,9 +10,9 @@ const RESULTS = {
     { label: "Hard", ppo: 0.0, ours: 90.0 },
   ],
   stones: [
-    { label: "Easy", ppo: 0.0, ours: 87.0 },
-    { label: "Medium", ppo: 0.0, ours: 88.3 },
-    { label: "Hard", ppo: 0.0, ours: 78.2 },
+    { label: "Easy", ppo: 0.0, ours: 97.1 },
+    { label: "Medium", ppo: 0.0, ours: 97.3 },
+    { label: "Hard", ppo: 0.0, ours: 96.4 },
   ],
 };
 

@@ -289,13 +289,16 @@
         <div class="framework-card reveal">
           <figure class="framework-figure">
             <img
-              src="assets/figure3.png"
-              alt="WM-LOCO framework: a policy block on the left and an RSSM world-model block on the right"
+              src="assets/fig-framework-v5.png"
+              alt="WM-LOCO framework: (a) a PPO policy with a mixture-of-experts actor–critic, (b) an RSSM world model, and the simulation that supplies on-policy data and task rewards"
+              width="2141"
+              height="1128"
+              loading="lazy"
             />
           </figure>
           <p class="media-caption">
-            Figure 2 · The WM-LOCO framework: a policy block (left) and an RSSM world-model block (right).
-            Proprioception and the velocity command enter the actor–critic directly, while depth enters only through
+            Figure 2 · WM-LOCO jointly trains an RSSM and a PPO actor–critic; the recurrent feature supplies predictive
+            context to the policy. Proprioception and the velocity command enter the actor–critic directly, while depth enters only through
             the world-model feature f<sup>WM</sup><sub>t</sub>; a mixture-of-experts backbone fuses the inputs and feeds
             the actor and critic heads. The PPO baseline omits only the world-model pathway and its auxiliary loss.
           </p>
@@ -401,8 +404,36 @@
             elevation map; CReF combines cross-modal attention with recurrent fusion of depth and proprioception. The PPO
             baseline shares the reward, perception stream, proprioceptive encoder, AMP motion prior, MoE actor–critic, and
             iteration budget, and omits only the world-model pathway and its auxiliary loss. Real reports WM-LOCO hardware
-            success at one fixed difficulty per terrain rather than separate tiers, over 10 trials per terrain class. On a
-            combined course chaining all four terrain classes in one episode, WM-LOCO achieves 95.4% success in simulation.
+            success at one fixed difficulty per terrain rather than separate tiers, over 10 trials per terrain class.
+          </p>
+        </div>
+
+        <div class="gait-block reveal">
+          <h3>Comparison with GLAD and CReF</h3>
+          <p>
+            WM-LOCO is the only method whose mean success exceeds 90% on every terrain class. Its four-terrain mean is
+            94.8%, compared with 71.5% for GLAD and 77.6% for CReF. GLAD degrades on stepping stones and beams, whereas
+            CReF degrades most strongly on gaps.
+          </p>
+        </div>
+
+        <div class="gait-block reveal">
+          <h3>Combined course</h3>
+          <p>
+            On a combined course that chains all four terrain classes in one episode, WM-LOCO achieves 95.4% success in
+            simulation.
+          </p>
+          <figure class="result-figure">
+            <img
+              src="assets/fig-combined-course-v5.jpg"
+              alt="Keyframes of WM-LOCO on a combined simulation course: stair ascent, stepping stones, gap crossing, narrow beam, and stair descent"
+              width="2400"
+              height="664"
+              loading="lazy"
+            />
+          </figure>
+          <p class="media-caption">
+            Figure 1(d) · Stair ascent, stepping stones, a gap, a balance beam, and stair descent in one simulated episode.
           </p>
         </div>
 
@@ -412,6 +443,19 @@
             The complete model achieves 98.6–99.6% success across the tested gap widths. Removing the world model reduces
             success to 0% for every width from 0.4–0.5 m onward; removing the MoE backbone also produces near-total failure
             beyond the smallest gap range, while removing the history encoder mainly impairs wider-gap traversal.
+          </p>
+          <figure class="result-figure result-figure--narrow">
+            <img
+              src="assets/fig-ablation-gap-v5.png"
+              alt="Gap-traversal success versus gap width for the full model and for variants without the world model, history encoder, or MoE"
+              width="1400"
+              height="892"
+              loading="lazy"
+            />
+          </figure>
+          <p class="media-caption">
+            Figure 5 · Gap-traversal success of the full model and of variants without the world model, history encoder,
+            or MoE.
           </p>
         </div>
 
@@ -423,6 +467,19 @@
             repeat the initial observation or supply alternative actions. At 1.0 s, reward prediction reaches 0.072 MAE
             with 0.887 correlation.
           </p>
+          <figure class="result-figure">
+            <img
+              src="assets/fig-wm-multistep-v5.png"
+              alt="Multi-step world-model predictions on stepping stones: ground-truth and predicted depth sequences, depth prediction error, and proprioception prediction error over a 1.5 s horizon"
+              width="1890"
+              height="1047"
+              loading="lazy"
+            />
+          </figure>
+          <p class="media-caption">
+            Figure 3 · Multi-step world-model predictions on stepping stones: (a) depth sequences; (b, c) depth and
+            proprioceptive errors. Rollouts receive no future observations.
+          </p>
         </div>
 
         <div class="gait-block reveal">
@@ -430,23 +487,23 @@
           <p>
             On stairs both methods achieve high success, but WM-LOCO produces more efficient and smoother motion: stride
             length improves while steps per metre, pelvis acceleration, and normalized mechanical energy all decrease.
-            Ranges below are relative to PPO across the Easy / Medium / Hard tiers.
+            Values below are mean relative changes versus PPO across the Easy / Medium / Hard tiers.
           </p>
           <div class="gait-metrics">
             <div class="gait-metric">
-              <span class="gait-delta up">+15% to +35%</span>
+              <span class="gait-delta up">+25.6%</span>
               <span class="gait-label">Stride length</span>
             </div>
             <div class="gait-metric">
-              <span class="gait-delta down">−9% to −21%</span>
+              <span class="gait-delta down">−15.3%</span>
               <span class="gait-label">Steps per metre</span>
             </div>
             <div class="gait-metric">
-              <span class="gait-delta down">−24% to −33%</span>
+              <span class="gait-delta down">−28.9%</span>
               <span class="gait-label">Pelvis acceleration</span>
             </div>
             <div class="gait-metric">
-              <span class="gait-delta down">−6% to −20%</span>
+              <span class="gait-delta down">−14.2%</span>
               <span class="gait-label">Normalized mechanical energy</span>
             </div>
           </div>

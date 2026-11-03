@@ -208,15 +208,13 @@
             </article>
             <article class="hw-item reveal">
               <h3>Outcome</h3>
-              <p>Contact patterns match simulation across all four classes, at a 92.5% average success rate over 10 trials per class (37/40) — stepping stones 100%, stairs 90%, gap 90%, balance beam 90%.</p>
+              <p>92.5% average success over 10 trials per class (37/40) — stepping stones 10/10, stairs 9/10, gap 9/10, balance beam 9/10.</p>
             </article>
           </div>
 
           <p class="media-caption">
-            On the stones the robot traverses the pads without observed foot-placement failures; on stairs it negotiates
-            each riser and places each foot flat on the tread without additional tuning; the 0.8 m gap is cleared in a
-            single step, with a swing-and-landing pattern similar to that observed in simulation; and the 0.10 m beam is
-            crossed in 9 of 10 trials. Larger gaps were not tested, for safety.
+            The simulation-trained policy runs on hardware without additional tuning. Larger gaps were not tested, for
+            safety.
           </p>
         </div>
 
@@ -311,7 +309,7 @@
       <div class="container">
         <div class="section-head">
           <h2>Quantitative Results</h2>
-          <p>Success rates in IsaacLab simulation across four terrain classes and three difficulty tiers, with external push perturbations and domain randomization disabled.</p>
+          <p>Success rates in Isaac Lab simulation across four terrain classes at Easy, Medium, and Hard difficulty.</p>
         </div>
 
         <div class="stat-strip reveal">
@@ -398,10 +396,7 @@
           </table>
           <p class="media-caption">
             Table 1 · Success rates (%) for four methods and four terrains. Mean is the arithmetic average of Easy,
-            Medium, and Hard; bold denotes the best simulation result in each row. An episode counts as a success if the
-            robot's center of mass crosses the goal line within 45 s. Each simulation cell fixes the terrain at one
-            difficulty tier with external push perturbations and domain randomization disabled, over at least 50 episodes
-            per (method, terrain, difficulty). GLAD uses global–local attention for terrain encoding of a robot-centric
+            Medium, and Hard; bold denotes the best simulation result in each row. GLAD uses global–local attention for terrain encoding of a robot-centric
             elevation map; CReF combines cross-modal attention with recurrent fusion of depth and proprioception. The PPO
             baseline shares the reward, perception stream, proprioceptive encoder, AMP motion prior, MoE actor–critic, and
             iteration budget, and omits only the world-model pathway and its auxiliary loss. Real reports WM-LOCO hardware
@@ -463,10 +458,11 @@
         <div class="gait-block reveal">
           <h3>World-model validation</h3>
           <p>
-            Given recorded actions, the world model predicts 15 updates (1.5 s) ahead without future observations, and its
-            predicted depth, proprioception, and reward track the Isaac Lab measurements more closely than controls that
-            repeat the initial observation or supply alternative actions. At 1.0 s, reward prediction reaches 0.072 MAE
-            with 0.887 correlation.
+            Given recorded actions, the world model predicts 15 updates (1.5 s) ahead without future observations. Its
+            predicted depth stays closer to the Isaac Lab measurements than controls that repeat the initial observation or
+            supply alternative actions, across the whole horizon. At 1.5 s, joint-position and joint-velocity errors remain
+            close to the current-observation reconstruction reference; at 1.0 s, reward prediction reaches 0.072 MAE with
+            0.887 correlation.
           </p>
           <figure class="result-figure">
             <img

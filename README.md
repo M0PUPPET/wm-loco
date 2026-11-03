@@ -11,9 +11,9 @@ guides the policy — no foothold labels, no terrain map. The same policy deploy
 Unitree G1 and clears gaps, stepping stones, stairs, and balance beams from depth alone, at
 92.5% average success on hardware across all four classes.
 
-Yuxi Liu¹, Lijun Han¹*, Ziming Wang¹², Ao Zhang¹, Cong Yang³, Wei Sui¹†
+Yuxi Liu¹*, Lijun Han¹*, Ziming Wang¹², Ao Zhang¹³, Cong Yang⁴, Wei Sui¹†
 
-¹D-Robotics · ²Beijing University of Posts and Telecommunications · ³Soochow University
+¹D-Robotics · ²Beijing University of Posts and Telecommunications · ³Harbin Institute of Technology · ⁴Soochow University
 
 *Equal contribution · †Project lead and corresponding author: wei.sui@d-robotics.cc
 

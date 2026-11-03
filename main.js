@@ -14,6 +14,11 @@ const RESULTS = {
     { label: "Medium", ppo: 0.0, ours: 97.3 },
     { label: "Hard", ppo: 0.0, ours: 96.4 },
   ],
+  beam: [
+    { label: "Easy", ppo: 0.0, ours: 99.0 },
+    { label: "Medium", ppo: 0.0, ours: 96.7 },
+    { label: "Hard", ppo: 0.0, ours: 80.7 },
+  ],
 };
 
 function renderCharts() {

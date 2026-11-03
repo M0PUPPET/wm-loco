@@ -432,7 +432,7 @@ button {
 
 .demo-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.1rem;
 }
 
@@ -468,6 +468,29 @@ button {
 
 .demo-card figcaption p {
   margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.featured-video {
+  margin: 0 0 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-elev);
+  box-shadow: var(--shadow);
+}
+
+.featured-clip {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0d1520;
+}
+
+.featured-video figcaption {
+  padding: 0.85rem 1rem 1rem;
+  border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: 0.9rem;
 }
@@ -615,7 +638,7 @@ button {
 
 .stat-strip {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0.85rem;
   margin-bottom: 1.75rem;
 }
@@ -642,7 +665,7 @@ button {
 
 .chart-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
 }
 
@@ -735,7 +758,7 @@ button {
 .results-table {
   width: 100%;
   border-collapse: collapse;
-  min-width: 560px;
+  min-width: 860px;
   background: var(--bg-elev);
   border: 1px solid var(--line);
   border-radius: var(--radius);
@@ -764,6 +787,11 @@ button {
 .results-table th.best-col {
   color: var(--accent);
   font-weight: 700;
+}
+
+.results-table tbody tr.mean-row td {
+  background: var(--bg-soft);
+  font-weight: 600;
 }
 
 /* ------------------------------------------------------------------ gait */

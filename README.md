@@ -15,7 +15,7 @@ Yuxi Liu¹*, Lijun Han¹*, Ziming Wang¹², Ao Zhang¹³, Cong Yang⁴, Wei Sui�
 
 ¹D-Robotics · ²Beijing University of Posts and Telecommunications · ³Harbin Institute of Technology · ⁴Soochow University
 
-*Equal contribution · †Project lead and corresponding author: wei.sui@d-robotics.cc
+*Equal contribution · †Corresponding author
 
 Page text tracks the latest arXiv version (arXiv:2609.02542v2, 3 Nov 2026; source package
 `instinctlab/paper/arxiv_v2_20261103/`); update it here when the paper changes.

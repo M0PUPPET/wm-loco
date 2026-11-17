@@ -865,6 +865,30 @@ button {
   line-height: 1.35;
 }
 
+.gait-metrics--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 520px;
+}
+
+.gait-table-wrap {
+  margin-top: 1.1rem;
+}
+
+.results-table.gait-table {
+  min-width: 720px;
+}
+
+.results-table.gait-table th,
+.results-table.gait-table td {
+  padding: 0.55rem 0.7rem;
+  text-align: center;
+}
+
+.results-table.gait-table td:first-child,
+.results-table.gait-table thead tr:first-child th:first-child {
+  text-align: left;
+}
+
 @media (max-width: 920px) {
   .gait-metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));

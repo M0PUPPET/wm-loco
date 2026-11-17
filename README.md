@@ -7,7 +7,7 @@ Foothold-Constrained Terrain**.
 
 WM-LOCO jointly trains a recurrent world model and a PPO policy. Conditioned on proprioception
 and a single onboard depth image, the world model produces a predictive recurrent feature that
-guides the policy — no foothold labels, no terrain map. The same policy deploys onboard a
+guides the policy — no offboard perception, no terrain map. The same policy deploys onboard a
 Unitree G1 and clears gaps, stepping stones, stairs, and balance beams from depth alone, at
 92.5% average success on hardware across all four classes.
 
@@ -17,8 +17,8 @@ Yuxi Liu¹*, Lijun Han¹*, Ziming Wang¹², Ao Zhang¹³, Cong Yang⁴, Wei Sui�
 
 *Equal contribution · †Project lead and corresponding author: wei.sui@d-robotics.cc
 
-Page text tracks the latest paper (`WM_LOCO_ICRA2027_submission_v5.pdf`, source in
-`wmppo/output/pdf/WM_LOCO_ICRA2027_submission_v5_source/`); update it here when the paper changes.
+Page text tracks the latest arXiv version (arXiv:2609.02542v2, 3 Nov 2026; source package
+`instinctlab/paper/arxiv_v2_20261103/`); update it here when the paper changes.
 
 ## Layout
 

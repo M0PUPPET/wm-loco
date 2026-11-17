@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WM-LOCO: World-Model-Augmented Visual Locomotion for Humanoids</title>
   <meta name="description" content="WM-LOCO jointly trains a recurrent world model and a PPO policy for humanoid locomotion on foothold-constrained terrain from proprioception and a single onboard depth stream." />
-  <meta name="theme-color" content="#060a13" />
+  <meta name="theme-color" content="#ffffff" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -26,7 +26,7 @@
         <a href="#method">Method</a>
         <a href="#citation">Citation</a>
       </div>
-      <img class="org-logo" src="assets/d-robotics-logo-dark.png" alt="D-Robotics" width="140" height="43" />
+      <img class="org-logo" src="assets/d-robotics-logo.png" alt="D-Robotics" width="140" height="43" />
       <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false">
         <span></span><span></span>
       </button>
@@ -35,7 +35,7 @@
 
   <main id="top">
     <!-- ============================================================ HERO -->
-    <section class="hero dark" id="overview">
+    <section class="hero band" id="overview">
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="container hero-inner">
@@ -108,15 +108,14 @@
     </section>
 
     <!-- ======================================================= FRAMEWORK -->
-    <section class="section" id="framework">
+    <section class="section alt" id="framework">
       <div class="container">
         <div class="section-head">
-          <p class="kicker">01 / Framework</p>
-          <h2>A world model that predicts, a policy that anticipates.</h2>
+          <p class="kicker">01</p>
+          <h2>Framework</h2>
           <p>
-            A recurrent world model, jointly trained with PPO, turns proprioception and a single onboard depth stream
-            into a predictive recurrent feature—no offboard perception, no terrain map—so a Unitree G1 clears gaps,
-            stepping stones, stairs, and balance beams.
+            WM-LOCO jointly trains a recurrent world model and a PPO actor–critic. The world model's recurrent memory
+            provides the actor–critic with predictive context.
           </p>
         </div>
 
@@ -139,17 +138,17 @@
         <div class="pillars">
           <article class="pillar reveal">
             <span class="pillar-index">A</span>
-            <h3>Predict</h3>
+            <h3>Recurrent World Model</h3>
             <p>An RSSM encodes onboard depth and proprioception into a recurrent latent state and learns action-conditioned dynamics that predict future proprioception, egocentric depth, and task reward.</p>
           </article>
           <article class="pillar reveal">
             <span class="pillar-index">B</span>
-            <h3>Condition</h3>
+            <h3>Policy Conditioning</h3>
             <p>A projection of the recurrent memory, f<sup>WM</sup><sub>t</sub> = g<sub>ψ</sub>(h<sub>t</sub>), feeds the PPO actor–critic. Depth reaches the policy only through this predictive feature.</p>
           </article>
           <article class="pillar reveal">
             <span class="pillar-index">C</span>
-            <h3>Train jointly</h3>
+            <h3>Joint Training</h3>
             <p>One stage: L<sub>PPO</sub> + L<sub>WM</sub> from the start, without world-model pretraining. At deployment the actor acts directly—no model rollout, no action search.</p>
           </article>
         </div>
@@ -157,10 +156,10 @@
     </section>
 
     <!-- ======================================================== ABSTRACT -->
-    <section class="section alt" id="abstract">
+    <section class="section" id="abstract">
       <div class="container abstract-layout">
         <div class="section-head">
-          <p class="kicker">02 / Abstract</p>
+          <p class="kicker">02</p>
           <h2>Abstract</h2>
           <ul class="keywords">
             <li>Humanoid Locomotion</li>
@@ -184,12 +183,12 @@
     </section>
 
     <!-- ============================================================ DEMO -->
-    <section class="section dark" id="demo">
+    <section class="section band" id="demo">
       <div class="container">
         <div class="section-head">
-          <p class="kicker">03 / Real-World Demo</p>
-          <h2>Onboard, on four foothold-constrained terrains.</h2>
-          <p>Unitree G1, a single head-mounted depth stream, everything computed onboard. One clip per terrain class, plus the full demo video.</p>
+          <p class="kicker">03</p>
+          <h2>Real-World Demo</h2>
+          <p>The policy runs onboard a Unitree G1 using proprioception and a single depth stream. One clip per terrain class, plus the full demo video.</p>
         </div>
 
         <figure class="video-card reveal">
@@ -261,11 +260,11 @@
             <p>Unitree G1 with a Jetson Orin. Proprioception and a single Intel RealSense D435 depth stream, all onboard—without offboard perception or a terrain map.</p>
           </article>
           <article class="spec reveal">
-            <p class="spec-label">Real course</p>
+            <p class="spec-label">Terrains</p>
             <p>Stepping stones with 0.25 m tops and 0.45 m gaps, stairs with 0.15 m risers and 0.25 m treads, a 0.8 m gap, and a 3 m long, 0.10 m wide balance beam.</p>
           </article>
           <article class="spec spec--accent reveal">
-            <p class="spec-label">Outcome</p>
+            <p class="spec-label">Success Rate</p>
             <p class="spec-big">92.5%<span>37 / 40</span></p>
             <p>Ten trials per terrain class, without additional tuning: zero-shot sim-to-real transfer.</p>
           </article>
@@ -274,11 +273,11 @@
     </section>
 
     <!-- ========================================================= RESULTS -->
-    <section class="section" id="results">
+    <section class="section alt" id="results">
       <div class="container">
         <div class="section-head">
-          <p class="kicker">04 / Results</p>
-          <h2>Reliable where the PPO baseline fails.</h2>
+          <p class="kicker">04</p>
+          <h2>Results</h2>
           <p>Success rates in Isaac Lab simulation across four terrain classes at Easy, Medium, and Hard difficulty.</p>
         </div>
 
@@ -363,7 +362,6 @@
 
         <div class="result-row reveal">
           <div class="result-text">
-            <p class="result-kicker">Baselines</p>
             <h3>Comparison with GLAD and CReF</h3>
             <p>
               WM-LOCO is the only method whose mean success exceeds 90% on every terrain class. Its four-terrain mean is
@@ -380,8 +378,8 @@
         </div>
 
         <div class="result-block reveal">
-          <p class="result-kicker">Combined course</p>
-          <h3>All four terrain classes in one episode: 95.4% success</h3>
+          <h3>Combined Course</h3>
+          <p>On a combined course that chains all four terrain classes in one episode, WM-LOCO achieves 95.4% success.</p>
           <figure class="figure-card">
             <a class="zoom" href="assets/fig-combined-course-v5.jpg" target="_blank" rel="noopener" aria-label="Open figure full size"><img src="assets/fig-combined-course-v5.jpg"
               alt="Keyframes of WM-LOCO on a combined simulation course: stair ascent, stepping stones, gap crossing, narrow beam, and stair descent"
@@ -392,8 +390,7 @@
 
         <div class="result-row reveal">
           <div class="result-text">
-            <p class="result-kicker">Ablation</p>
-            <h3>The world model is what makes gaps possible</h3>
+            <h3>Ablation Study</h3>
             <p>
               The complete model achieves 98.6–99.6% success across the tested gap widths. Removing the world model reduces
               success to 0% for every width from 0.4–0.5 m onward; removing the MoE backbone also produces near-total failure
@@ -409,8 +406,7 @@
         </div>
 
         <div class="result-block reveal">
-          <p class="result-kicker">World-model validation</p>
-          <h3>Multi-step prediction without future observations</h3>
+          <h3>World-Model Validation</h3>
           <p>
             Given recorded actions, the world model predicts 15 updates (1.5 s) ahead without future observations. Its
             predicted depth stays closer to the Isaac Lab measurements than controls that repeat the initial observation or
@@ -428,8 +424,7 @@
 
         <div class="result-row reveal">
           <div class="result-text">
-            <p class="result-kicker">Reconstruction reference</p>
-            <h3>The latent state keeps the current observation</h3>
+            <h3>Posterior Reconstruction</h3>
             <p>
               As a decoding reference, posterior reconstruction encodes and decodes the current observation at each update
               without a multi-step rollout. Errors remain low overall, with transient increases in depth and joint velocity,
@@ -445,8 +440,7 @@
         </div>
 
         <div class="result-block reveal">
-          <p class="result-kicker">Gait quality on stairs</p>
-          <h3>Similar success, more efficient and smoother motion</h3>
+          <h3>Gait Quality on Stairs</h3>
           <p>
             On stairs both methods achieve high success, but WM-LOCO produces more efficient and smoother motion. Stride
             length increases by 25.6%, and pelvis acceleration decreases by 28.9%; these percentages are mean relative
@@ -482,11 +476,11 @@
     </section>
 
     <!-- ========================================================== METHOD -->
-    <section class="section alt" id="method">
+    <section class="section" id="method">
       <div class="container">
         <div class="section-head">
-          <p class="kicker">05 / Method</p>
-          <h2>Method details</h2>
+          <p class="kicker">05</p>
+          <h2>Method</h2>
           <p>A recurrent world model jointly trained with PPO, supplying a predictive recurrent feature to the actor–critic.</p>
         </div>
 
@@ -524,11 +518,11 @@
     </section>
 
     <!-- ======================================================== CITATION -->
-    <section class="section dark" id="citation">
+    <section class="section band" id="citation">
       <div class="container narrow">
         <div class="section-head">
-          <p class="kicker">06 / Citation</p>
-          <h2>Cite WM-LOCO</h2>
+          <p class="kicker">06</p>
+          <h2>Citation</h2>
           <p>If WM-LOCO is useful in your research, please cite our paper.</p>
         </div>
 

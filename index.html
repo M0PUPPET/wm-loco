@@ -20,10 +20,8 @@
       </a>
       <div class="nav-links">
         <a href="#framework">Framework</a>
-        <a href="#abstract">Abstract</a>
-        <a href="#demo">Demo</a>
+        <a href="#real-world">Real World</a>
         <a href="#results">Results</a>
-        <a href="#method">Method</a>
         <a href="#citation">Citation</a>
       </div>
       <img class="org-logo" src="assets/d-robotics-logo.png" alt="D-Robotics" width="140" height="43" />
@@ -35,12 +33,11 @@
 
   <main id="top">
     <!-- ============================================================ HERO -->
-    <section class="hero band" id="overview">
+    <section class="hero" id="overview">
       <div class="hero-grid" aria-hidden="true"></div>
       <div class="hero-glow" aria-hidden="true"></div>
       <div class="container hero-inner">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="dot"></span>arXiv 2609.02542 · Humanoid Locomotion · World Models</p>
           <h1>
             <span class="brand-mark">WM-LOCO</span>
             <span class="hero-title">World-Model-Augmented Visual Locomotion for Humanoids on Foothold-Constrained Terrain</span>
@@ -67,10 +64,6 @@
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l5 5v13H7z" /><path d="M14 3v5h5" /><path d="M10 13h6M10 17h6" /></svg>
               Paper · arXiv
             </a>
-            <a class="btn" href="#demo">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-              Demo Video
-            </a>
             <a class="btn" href="#citation">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5" /></svg>
               BibTeX
@@ -79,53 +72,35 @@
         </div>
 
         <figure class="hero-visual">
-          <div class="frame">
+          <button class="frame media-trigger" type="button"
+            data-lightbox="video" data-src="assets/wm-loco-demo-v10.mp4" data-poster="assets/wm-loco-demo-v10-poster.jpg"
+            aria-label="Play the WM-LOCO demo video">
             <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-            <video
-              class="hero-video"
-              src="assets/s600-demo.mp4"
-              poster="assets/s600-demo-poster.jpg"
-              autoplay
-              muted
-              loop
-              playsinline
-              preload="metadata"
-              aria-label="Unitree G1 crossing stepping stones on stage at the D-Robotics S600 launch"
-            ></video>
-          </div>
-          <figcaption><span class="live">LIVE</span> D-Robotics S600 launch · stage demo</figcaption>
+            <img class="hero-poster" src="assets/wm-loco-demo-v10-poster.jpg" alt="WM-LOCO demo video" width="1280" height="720" />
+            <span class="play-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></span>
+          </button>
+          <figcaption>
+            <span class="fig-tag">Demo · 2:12</span>
+            Onboard runs on all four terrain classes, time-aligned REAL vs. SIM comparisons, simulation runs, and
+            world-model open-loop prediction.
+          </figcaption>
         </figure>
-      </div>
-
-      <div class="container">
-        <dl class="hero-stats">
-          <div><dt>94.8%</dt><dd>Mean success in simulation<br />4 terrains × 3 difficulty tiers</dd></div>
-          <div><dt>92.5%</dt><dd>Zero-shot on a Unitree G1<br />37 / 40 hardware trials</dd></div>
-          <div><dt>4</dt><dd>Foothold-constrained classes<br />gaps · stones · stairs · beams</dd></div>
-          <div><dt>1</dt><dd>Onboard depth stream<br />no terrain map, no offboard perception</dd></div>
-        </dl>
       </div>
     </section>
 
     <!-- ======================================================= FRAMEWORK -->
-    <section class="section alt" id="framework">
+    <section class="section" id="framework">
       <div class="container">
         <div class="section-head">
           <p class="kicker">01</p>
           <h2>Framework</h2>
-          <p>
-            WM-LOCO jointly trains a recurrent world model and a PPO actor–critic. The world model's recurrent memory
-            provides the actor–critic with predictive context.
-          </p>
         </div>
 
-        <figure class="figure-card figure-card--hero reveal">
-          <a class="zoom" href="assets/fig-framework-v5.png" target="_blank" rel="noopener" aria-label="Open figure full size"><img
+        <figure class="figure-card reveal">
+          <a class="zoom" href="assets/fig-framework-v5.png" data-lightbox="image" aria-label="Enlarge Fig. 2"><img
             src="assets/fig-framework-v5.png"
             alt="WM-LOCO framework: (a) a PPO policy with a mixture-of-experts actor–critic, (b) an RSSM world model, and the simulation that supplies on-policy data and task rewards"
-            width="2141"
-            height="1128"
-          /></a>
+            width="2141" height="1128" /></a>
           <figcaption>
             <span class="fig-tag">Fig. 2</span>
             WM-LOCO jointly trains an RSSM and a PPO actor–critic; the recurrent feature supplies predictive context to
@@ -135,186 +110,88 @@
           </figcaption>
         </figure>
 
-        <div class="pillars">
-          <article class="pillar reveal">
-            <span class="pillar-index">A</span>
-            <h3>Recurrent World Model</h3>
-            <p>An RSSM encodes onboard depth and proprioception into a recurrent latent state and learns action-conditioned dynamics that predict future proprioception, egocentric depth, and task reward.</p>
-          </article>
-          <article class="pillar reveal">
-            <span class="pillar-index">B</span>
-            <h3>Policy Conditioning</h3>
-            <p>A projection of the recurrent memory, f<sup>WM</sup><sub>t</sub> = g<sub>ψ</sub>(h<sub>t</sub>), feeds the PPO actor–critic. Depth reaches the policy only through this predictive feature.</p>
-          </article>
-          <article class="pillar reveal">
-            <span class="pillar-index">C</span>
-            <h3>Joint Training</h3>
-            <p>One stage: L<sub>PPO</sub> + L<sub>WM</sub> from the start, without world-model pretraining. At deployment the actor acts directly—no model rollout, no action search.</p>
-          </article>
+        <div class="abstract-block" id="abstract">
+          <h3>Abstract</h3>
+          <div class="prose">
+            <p>
+              Foothold-constrained terrain limits feasible footholds to sparse, discontinuous, or narrow support regions, as in gaps, stepping stones, stairs, and balance beams. In such settings, a single misplaced step can cause a fall. Reliable traversal therefore requires precise foot placement and anticipation of upcoming terrain.
+            </p>
+            <p>
+              To address this challenge, we present <strong>World-Model-Augmented Visual Locomotion (WM-LOCO)</strong>, which augments a visual locomotion policy with predictive context from a jointly trained world model. Given onboard depth observations and proprioception, a recurrent state-space model (RSSM) learns action-conditioned latent dynamics that predict future proprioceptive states, egocentric observations, and task rewards. The resulting recurrent feature is then fed into the proximal policy optimization (PPO) actor–critic, providing predictive context for anticipatory foot placement on foothold-constrained terrain.
+            </p>
+            <p>
+              WM-LOCO achieves average success rates of 96.0% on gaps, 96.9% on stepping stones, 94.0% on stairs, and 92.1% on balance beams, outperforming the evaluated baselines while improving gait efficiency and smoothness. Furthermore, WM-LOCO achieves zero-shot sim-to-real transfer to a Unitree G1, with 92.5% success across these four terrain classes.
+            </p>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ======================================================== ABSTRACT -->
-    <section class="section" id="abstract">
-      <div class="container abstract-layout">
-        <div class="section-head">
-          <p class="kicker">02</p>
-          <h2>Abstract</h2>
-          <ul class="keywords">
-            <li>Humanoid Locomotion</li>
-            <li>World Models</li>
-            <li>Foothold-Constrained Terrain</li>
-            <li>Reinforcement Learning</li>
-          </ul>
-        </div>
-        <div class="prose">
-          <p>
-            Foothold-constrained terrain limits feasible footholds to sparse, discontinuous, or narrow support regions, as in gaps, stepping stones, stairs, and balance beams. In such settings, a single misplaced step can cause a fall. Reliable traversal therefore requires precise foot placement and anticipation of upcoming terrain.
-          </p>
-          <p>
-            To address this challenge, we present <strong>World-Model-Augmented Visual Locomotion (WM-LOCO)</strong>, which augments a visual locomotion policy with predictive context from a jointly trained world model. Given onboard depth observations and proprioception, a recurrent state-space model (RSSM) learns action-conditioned latent dynamics that predict future proprioceptive states, egocentric observations, and task rewards. The resulting recurrent feature is then fed into the proximal policy optimization (PPO) actor–critic, providing predictive context for anticipatory foot placement on foothold-constrained terrain.
-          </p>
-          <p>
-            WM-LOCO achieves average success rates of 96.0% on gaps, 96.9% on stepping stones, 94.0% on stairs, and 92.1% on balance beams, outperforming the evaluated baselines while improving gait efficiency and smoothness. Furthermore, WM-LOCO achieves zero-shot sim-to-real transfer to a Unitree G1, with 92.5% success across these four terrain classes.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================================================ DEMO -->
-    <section class="section band" id="demo">
+    <!-- ====================================================== REAL WORLD -->
+    <section class="section band" id="real-world">
       <div class="container">
         <div class="section-head">
-          <p class="kicker">03</p>
-          <h2>Real-World Demo</h2>
-          <p>The policy runs onboard a Unitree G1 using proprioception and a single depth stream. One clip per terrain class, plus the full demo video.</p>
+          <p class="kicker">02</p>
+          <h2>Real-World Experiments</h2>
+          <p>
+            The policy runs onboard a Unitree G1 with a Jetson Orin, using proprioception and a single Intel RealSense
+            D435 depth stream, without additional tuning. Ten trials per terrain class: 37/40 successful (92.5%).
+          </p>
         </div>
-
-        <figure class="video-card reveal">
-          <div class="frame">
-            <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-            <video
-              class="featured-clip"
-              src="assets/wm-loco-demo-v9.mp4"
-              poster="assets/wm-loco-demo-v9-poster.jpg"
-              controls
-              playsinline
-              preload="metadata"
-              aria-label="WM-LOCO demo video: onboard runs on all four terrain classes, REAL vs. SIM comparisons, simulation runs, and world-model open-loop prediction"
-            ></video>
-          </div>
-          <figcaption>
-            <span class="fig-tag">Full demo</span>
-            Onboard runs on all four terrain classes, time-aligned REAL vs. SIM comparisons on the same terrain geometry,
-            simulation runs, and world-model open-loop prediction.
-          </figcaption>
-        </figure>
 
         <div class="demo-grid">
           <figure class="demo-card reveal">
-            <video class="demo-clip" src="assets/demo-stones.mp4" poster="assets/demo-stones-poster.jpg"
-              autoplay muted loop playsinline controls preload="metadata"
-              aria-label="Unitree G1 crossing stepping stones"></video>
+            <button class="demo-media media-trigger" type="button" data-lightbox="video" data-src="assets/demo-stones.mp4" aria-label="Enlarge: stepping stones">
+              <video class="demo-clip" src="assets/demo-stones.mp4" poster="assets/demo-stones-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+              <span class="expand-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg></span>
+            </button>
             <figcaption>
-              <span class="demo-index">01</span>
               <div><h3>Stepping stones</h3><p>0.25 m stone tops, 0.45 m gaps</p></div>
               <span class="demo-score">10/10</span>
             </figcaption>
           </figure>
           <figure class="demo-card reveal">
-            <video class="demo-clip" src="assets/demo-gap.mp4" poster="assets/demo-gap-poster.jpg"
-              autoplay muted loop playsinline controls preload="metadata"
-              aria-label="Unitree G1 clearing a gap between platforms"></video>
+            <button class="demo-media media-trigger" type="button" data-lightbox="video" data-src="assets/demo-gap.mp4" aria-label="Enlarge: gap">
+              <video class="demo-clip" src="assets/demo-gap.mp4" poster="assets/demo-gap-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+              <span class="expand-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg></span>
+            </button>
             <figcaption>
-              <span class="demo-index">02</span>
               <div><h3>Gap</h3><p>A 0.8 m gap between two platforms</p></div>
               <span class="demo-score">9/10</span>
             </figcaption>
           </figure>
           <figure class="demo-card reveal">
-            <video class="demo-clip" src="assets/demo-beam.mp4" poster="assets/demo-beam-poster.jpg"
-              autoplay muted loop playsinline controls preload="metadata"
-              aria-label="Unitree G1 traversing a balance beam, front view (left) and side view (right)"></video>
+            <button class="demo-media media-trigger" type="button" data-lightbox="video" data-src="assets/demo-beam.mp4" aria-label="Enlarge: balance beam">
+              <video class="demo-clip" src="assets/demo-beam.mp4" poster="assets/demo-beam-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+              <span class="expand-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg></span>
+            </button>
             <figcaption>
-              <span class="demo-index">03</span>
-              <div><h3>Balance beam</h3><p>0.10 m wide · front and side views</p></div>
+              <div><h3>Balance beam</h3><p>3 m long, 0.10 m wide · front and side views</p></div>
               <span class="demo-score">9/10</span>
             </figcaption>
           </figure>
           <figure class="demo-card reveal">
-            <video class="demo-clip" src="assets/demo-stairs.mp4" poster="assets/demo-stairs-poster.jpg"
-              autoplay muted loop playsinline controls preload="metadata"
-              aria-label="Unitree G1 ascending and descending stairs"></video>
+            <button class="demo-media media-trigger" type="button" data-lightbox="video" data-src="assets/demo-stairs.mp4" aria-label="Enlarge: stairs">
+              <video class="demo-clip" src="assets/demo-stairs.mp4" poster="assets/demo-stairs-poster.jpg" autoplay muted loop playsinline preload="metadata"></video>
+              <span class="expand-badge" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg></span>
+            </button>
             <figcaption>
-              <span class="demo-index">04</span>
               <div><h3>Stairs</h3><p>0.15 m risers, 0.25 m treads, up and down</p></div>
               <span class="demo-score">9/10</span>
             </figcaption>
           </figure>
         </div>
-
-        <div class="spec-grid" id="sim2real">
-          <article class="spec reveal">
-            <p class="spec-label">Platform</p>
-            <p>Unitree G1 with a Jetson Orin. Proprioception and a single Intel RealSense D435 depth stream, all onboard—without offboard perception or a terrain map.</p>
-          </article>
-          <article class="spec reveal">
-            <p class="spec-label">Terrains</p>
-            <p>Stepping stones with 0.25 m tops and 0.45 m gaps, stairs with 0.15 m risers and 0.25 m treads, a 0.8 m gap, and a 3 m long, 0.10 m wide balance beam.</p>
-          </article>
-          <article class="spec spec--accent reveal">
-            <p class="spec-label">Success Rate</p>
-            <p class="spec-big">92.5%<span>37 / 40</span></p>
-            <p>Ten trials per terrain class, without additional tuning: zero-shot sim-to-real transfer.</p>
-          </article>
-        </div>
       </div>
     </section>
 
     <!-- ========================================================= RESULTS -->
-    <section class="section alt" id="results">
+    <section class="section" id="results">
       <div class="container">
         <div class="section-head">
-          <p class="kicker">04</p>
-          <h2>Results</h2>
-          <p>Success rates in Isaac Lab simulation across four terrain classes at Easy, Medium, and Hard difficulty.</p>
+          <p class="kicker">03</p>
+          <h2>Simulation Results</h2>
+          <p>Success rates in Isaac Lab across four terrain classes at Easy, Medium, and Hard difficulty.</p>
         </div>
-
-        <div class="stat-strip reveal">
-          <div class="stat"><strong>0% → 96.0%</strong><span>Gap · PPO → WM-LOCO</span></div>
-          <div class="stat"><strong>0% → 96.9%</strong><span>Stepping stones · PPO → WM-LOCO</span></div>
-          <div class="stat"><strong>0% → 92.1%</strong><span>Balance beam · PPO → WM-LOCO</span></div>
-          <div class="stat"><strong>94.8%</strong><span>Four-terrain mean, simulation</span></div>
-          <div class="stat"><strong>92.5%</strong><span>Onboard, 10 trials per class</span></div>
-        </div>
-
-        <div class="chart-grid">
-          <article class="chart-card reveal">
-            <p class="chart-kicker">Riser height · 9.0–10.0 / 12.5–13.5 / 18.5–19.5 cm</p>
-            <h3>Stairs</h3>
-            <div class="bar-chart" data-chart="stairs"></div>
-          </article>
-          <article class="chart-card reveal">
-            <p class="chart-kicker">Gap width · 0.40–0.55 / 0.90–1.10 / 1.80–2.00 m</p>
-            <h3>Gap</h3>
-            <div class="bar-chart" data-chart="gap"></div>
-          </article>
-          <article class="chart-card reveal">
-            <p class="chart-kicker">Stone edge · 28.7–29.3 / 26.7–27.3 / 23.3–24.0 cm</p>
-            <h3>Stepping Stones</h3>
-            <div class="bar-chart" data-chart="stones"></div>
-          </article>
-          <article class="chart-card reveal">
-            <p class="chart-kicker">Beam width · 29.6–32.3 / 18.8–21.5 / 8.0–10.7 cm</p>
-            <h3>Balance Beam</h3>
-            <div class="bar-chart" data-chart="beam"></div>
-          </article>
-        </div>
-        <p class="chart-legend">
-          <span class="swatch ppo"></span> PPO (no WM)
-          <span class="swatch ours"></span> WM-LOCO (ours)
-        </p>
 
         <div class="table-wrap reveal">
           <table class="results-table">
@@ -360,33 +237,24 @@
           </p>
         </div>
 
-        <div class="result-row reveal">
-          <div class="result-text">
-            <h3>Comparison with GLAD and CReF</h3>
-            <p>
-              WM-LOCO is the only method whose mean success exceeds 90% on every terrain class. Its four-terrain mean is
-              94.8%, compared with 71.5% for GLAD and 77.6% for CReF. GLAD degrades on stepping stones and beams, whereas
-              CReF degrades most strongly on gaps.
-            </p>
-          </div>
-          <figure class="figure-card">
-            <a class="zoom" href="assets/fig-radar-v2.png" target="_blank" rel="noopener" aria-label="Open figure full size"><img src="assets/fig-radar-v2.png"
-              alt="Radar chart of success rates averaged across difficulty tiers for PPO, GLAD, CReF, and WM-LOCO on stairs, gaps, stepping stones, and balance beams"
-              width="1362" height="1100" loading="lazy" /></a>
-            <figcaption><span class="fig-tag">Fig. 4</span> Success rates averaged across difficulty tiers. PPO achieves 0% success on gaps, stepping stones, and balance beams.</figcaption>
-          </figure>
+        <div class="result-block reveal">
+          <h3>Baseline Comparisons</h3>
+          <p>
+            WM-LOCO is the only method whose mean success exceeds 90% on every terrain class. Its four-terrain mean is
+            94.8%, compared with 71.5% for GLAD and 77.6% for CReF; the PPO baseline records no successful trials on gaps,
+            stepping stones, and balance beams. On stairs, where PPO also succeeds, WM-LOCO produces more efficient and smoother
+            motion: stride length increases by 25.6% and pelvis acceleration decreases by 28.9% (mean relative changes
+            across the three tiers). On a combined
+            course that chains all four terrain classes in one episode, WM-LOCO achieves 95.4% success.
+          </p>
         </div>
 
-        <div class="result-block reveal">
-          <h3>Combined Course</h3>
-          <p>On a combined course that chains all four terrain classes in one episode, WM-LOCO achieves 95.4% success.</p>
-          <figure class="figure-card">
-            <a class="zoom" href="assets/fig-combined-course-v5.jpg" target="_blank" rel="noopener" aria-label="Open figure full size"><img src="assets/fig-combined-course-v5.jpg"
-              alt="Keyframes of WM-LOCO on a combined simulation course: stair ascent, stepping stones, gap crossing, narrow beam, and stair descent"
-              width="2400" height="664" loading="lazy" /></a>
-            <figcaption><span class="fig-tag">Fig. 1(d)</span> Stair ascent, stepping stones, a gap, a balance beam, and stair descent in one simulated episode.</figcaption>
-          </figure>
-        </div>
+        <figure class="figure-card result-figure reveal">
+          <a class="zoom" href="assets/fig-combined-course-v5.jpg" data-lightbox="image" aria-label="Enlarge Fig. 1(d)"><img src="assets/fig-combined-course-v5.jpg"
+            alt="Keyframes of WM-LOCO on a combined simulation course: stair ascent, stepping stones, gap crossing, narrow beam, and stair descent"
+            width="2400" height="664" loading="lazy" /></a>
+          <figcaption><span class="fig-tag">Fig. 1(d)</span> Combined course: stair ascent, stepping stones, a gap, a balance beam, and stair descent in one simulated episode.</figcaption>
+        </figure>
 
         <div class="result-row reveal">
           <div class="result-text">
@@ -398,7 +266,7 @@
             </p>
           </div>
           <figure class="figure-card">
-            <a class="zoom" href="assets/fig-ablation-gap-v5.png" target="_blank" rel="noopener" aria-label="Open figure full size"><img src="assets/fig-ablation-gap-v5.png"
+            <a class="zoom" href="assets/fig-ablation-gap-v5.png" data-lightbox="image" aria-label="Enlarge Fig. 5"><img src="assets/fig-ablation-gap-v5.png"
               alt="Gap-traversal success versus gap width for the full model and for variants without the world model, history encoder, or MoE"
               width="1400" height="892" loading="lazy" /></a>
             <figcaption><span class="fig-tag">Fig. 5</span> Gap-traversal success of the full model and of variants without the world model, history encoder, or MoE.</figcaption>
@@ -415,105 +283,13 @@
             0.887 correlation.
           </p>
           <figure class="figure-card">
-            <a class="zoom" href="assets/fig-wm-multistep-v5.png" target="_blank" rel="noopener" aria-label="Open figure full size"><img src="assets/fig-wm-multistep-v5.png"
+            <a class="zoom" href="assets/fig-wm-multistep-v5.png" data-lightbox="image" aria-label="Enlarge Fig. 3"><img src="assets/fig-wm-multistep-v5.png"
               alt="Multi-step world-model predictions on stepping stones: ground-truth and predicted depth sequences, depth prediction error, and proprioception prediction error over a 1.5 s horizon"
               width="1890" height="1047" loading="lazy" /></a>
             <figcaption><span class="fig-tag">Fig. 3</span> Multi-step world-model predictions on stepping stones: (a) depth sequences; (b, c) depth and proprioceptive errors. Rollouts receive no future observations.</figcaption>
           </figure>
         </div>
 
-        <div class="result-row reveal">
-          <div class="result-text">
-            <h3>Posterior Reconstruction</h3>
-            <p>
-              As a decoding reference, posterior reconstruction encodes and decodes the current observation at each update
-              without a multi-step rollout. Errors remain low overall, with transient increases in depth and joint velocity,
-              indicating that the latent state preserves information about the current observation.
-            </p>
-          </div>
-          <figure class="figure-card">
-            <a class="zoom" href="assets/fig-wm-recon-v2.png" target="_blank" rel="noopener" aria-label="Open figure full size"><img src="assets/fig-wm-recon-v2.png"
-              alt="Posterior reconstruction errors for depth and robot-state measurements over time"
-              width="1362" height="1056" loading="lazy" /></a>
-            <figcaption><span class="fig-tag">Fig. 6</span> Posterior reconstruction errors for depth and robot-state measurements (median MSE across seven parallel environments; depth normalized to [0, 1]).</figcaption>
-          </figure>
-        </div>
-
-        <div class="result-block reveal">
-          <h3>Gait Quality on Stairs</h3>
-          <p>
-            On stairs both methods achieve high success, but WM-LOCO produces more efficient and smoother motion. Stride
-            length increases by 25.6%, and pelvis acceleration decreases by 28.9%; these percentages are mean relative
-            changes across the three tiers. Steps per meter and normalized mechanical energy also decrease at every tier.
-          </p>
-          <div class="gait-metrics">
-            <div class="gait-metric"><span class="gait-delta up">+25.6%</span><span class="gait-label">Stride length</span></div>
-            <div class="gait-metric"><span class="gait-delta down">−28.9%</span><span class="gait-label">Pelvis acceleration</span></div>
-          </div>
-          <div class="table-wrap">
-            <table class="results-table gait-table">
-              <thead>
-                <tr><th rowspan="2">Metric</th><th rowspan="2">Unit</th><th colspan="2">Easy</th><th colspan="2">Medium</th><th colspan="2">Hard</th></tr>
-                <tr><th>PPO</th><th class="best-col">WM-LOCO</th><th>PPO</th><th class="best-col">WM-LOCO</th><th>PPO</th><th class="best-col">WM-LOCO</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Stride length ↑</td><td>m</td><td>0.45</td><td class="best">0.52</td><td>0.42</td><td class="best">0.53</td><td>0.40</td><td class="best">0.54</td></tr>
-                <tr><td>Steps per meter ↓</td><td>m<sup>−1</sup></td><td>4.91</td><td class="best">4.45</td><td>5.04</td><td class="best">4.26</td><td>5.15</td><td class="best">4.07</td></tr>
-                <tr><td>Normalized mechanical energy ↓</td><td>—</td><td>1.01</td><td class="best">0.95</td><td>1.21</td><td class="best">1.01</td><td>1.43</td><td class="best">1.14</td></tr>
-                <tr><td>Pelvis acc. ↓</td><td>m/s<sup>2</sup></td><td>6.96</td><td class="best">5.28</td><td>8.26</td><td class="best">5.85</td><td>9.89</td><td class="best">6.58</td></tr>
-                <tr><td>Action-rate ↓</td><td>—</td><td>3.94</td><td class="best">2.61</td><td>6.19</td><td class="best">2.88</td><td>8.14</td><td class="best">3.32</td></tr>
-                <tr><td>Torque/limit</td><td>—</td><td>0.56</td><td>0.59</td><td>0.62</td><td>0.63</td><td>0.67</td><td>0.66</td></tr>
-              </tbody>
-            </table>
-            <p class="media-caption">
-              <span class="fig-tag">Table 3</span>
-              Stair gait, energy, and smoothness metrics per difficulty tier. Arrows indicate the preferred direction; bold
-              denotes the better value in each row that has a preferred direction.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========================================================== METHOD -->
-    <section class="section" id="method">
-      <div class="container">
-        <div class="section-head">
-          <p class="kicker">05</p>
-          <h2>Method</h2>
-          <p>A recurrent world model jointly trained with PPO, supplying a predictive recurrent feature to the actor–critic.</p>
-        </div>
-
-        <div class="method-grid">
-          <article class="method-item reveal">
-            <span class="method-index">01</span>
-            <h3>Observations</h3>
-            <p>
-              At each control step the robot observes a short proprioceptive history p<sub>t</sub> (joint positions, joint velocities, base angular velocity, projected gravity, and previous actions), a depth image d<sub>t</sub> from a single head-mounted camera, and a commanded base-frame velocity c<sub>t</sub>. A history encoder embeds the proprioceptive inputs of the last H = 5 control steps. On foothold-constrained terrain a foot landing outside the available support can directly cause a fall, so the policy must anticipate upcoming support conditions.
-            </p>
-          </article>
-          <article class="method-item reveal">
-            <span class="method-index">02</span>
-            <h3>World Model</h3>
-            <p>
-              A recurrent state-space model (RSSM) with deterministic memory h<sub>t</sub> and a discrete stochastic latent z<sub>t</sub>: a GRU transition advances the memory with the actions executed since the previous update, a prior predicts z<sub>t</sub> from the memory alone, a posterior additionally uses the current observation, and prediction heads reconstruct proprioception and depth and predict the task reward. A KL term matches the prior to the posterior; since the prior has no access to the current observation, this trains the dynamics to predict observation-informed states from preceding states and actions.
-            </p>
-          </article>
-          <article class="method-item reveal">
-            <span class="method-index">03</span>
-            <h3>Joint Training</h3>
-            <p>
-              The joint objective is L<sub>PPO</sub> + L<sub>WM</sub>. Training starts jointly without world-model pretraining, and world-model gradients also update the observation encoders. At each control step a projection network maps the most recently updated memory to the policy feature f<sup>WM</sup><sub>t</sub> = g<sub>ψ</sub>(h<sub>t</sub>); proprioception and the velocity command enter the actor–critic directly, while depth enters only through f<sup>WM</sup><sub>t</sub>. The world model updates at 10 Hz and the policy at 50 Hz. At deployment the actor outputs actions directly, without model rollout or action search.
-            </p>
-          </article>
-          <article class="method-item reveal">
-            <span class="method-index">04</span>
-            <h3>Training Rewards</h3>
-            <p>
-              A standard locomotion reward combines velocity and heading tracking with posture, gait, smoothness, energy, and joint-safety terms. Contact-region rewards, computed from foot-mesh sample points following Hiking in the Wild, discourage invalid foot placements: stairs use a boundary penalty, a riser-penetration penalty, and a sequential tread-contact reward; stepping stones use a top-contact reward whose window opens once per episode on sufficient contact and closes after a short duration or when contact is lost, after which the stone leaves the eligible set. The PPO baseline uses the same rewards.
-            </p>
-          </article>
-        </div>
       </div>
     </section>
 
@@ -521,17 +297,12 @@
     <section class="section band" id="citation">
       <div class="container narrow">
         <div class="section-head">
-          <p class="kicker">06</p>
+          <p class="kicker">04</p>
           <h2>Citation</h2>
-          <p>If WM-LOCO is useful in your research, please cite our paper.</p>
         </div>
 
         <div class="cite-box">
-          <div class="cite-bar">
-            <span class="cite-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-            <span class="cite-file">wmloco.bib</span>
-            <button class="copy-btn" type="button" data-copy>Copy</button>
-          </div>
+          <button class="copy-btn" type="button" data-copy>Copy</button>
           <pre id="bibtex"><code>@misc{liu2026wmloco,
   title         = {World-Model-Augmented Visual Locomotion for
                    Humanoids on Foothold-Constrained Terrain},
@@ -544,7 +315,6 @@
 }</code></pre>
         </div>
 
-        <p class="correspondence">Correspondence: <a href="mailto:wei.sui@d-robotics.cc">wei.sui@d-robotics.cc</a></p>
       </div>
     </section>
   </main>
@@ -555,6 +325,13 @@
       <a href="#top">Back to top ↑</a>
     </div>
   </footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged view" hidden>
+    <button class="lightbox-close" type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+    </button>
+    <div class="lightbox-stage"></div>
+  </div>
 
   <script src="main.js"></script>
 </body>

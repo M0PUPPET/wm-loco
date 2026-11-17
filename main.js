@@ -1,59 +1,3 @@
-const RESULTS = {
-  stairs: [
-    { label: "Easy", ppo: 87.0, ours: 94.2 },
-    { label: "Medium", ppo: 91.4, ours: 95.7 },
-    { label: "Hard", ppo: 91.3, ours: 92.0 },
-  ],
-  gap: [
-    { label: "Easy", ppo: 0.0, ours: 98.0 },
-    { label: "Medium", ppo: 0.0, ours: 100.0 },
-    { label: "Hard", ppo: 0.0, ours: 90.0 },
-  ],
-  stones: [
-    { label: "Easy", ppo: 0.0, ours: 97.1 },
-    { label: "Medium", ppo: 0.0, ours: 97.3 },
-    { label: "Hard", ppo: 0.0, ours: 96.4 },
-  ],
-  beam: [
-    { label: "Easy", ppo: 0.0, ours: 99.0 },
-    { label: "Medium", ppo: 0.0, ours: 96.7 },
-    { label: "Hard", ppo: 0.0, ours: 80.7 },
-  ],
-};
-
-function renderCharts() {
-  document.querySelectorAll("[data-chart]").forEach((root) => {
-    const key = root.dataset.chart;
-    const rows = RESULTS[key];
-    if (!rows) return;
-
-    root.innerHTML = rows
-      .map(
-        (row) => `
-      <div class="bar-group">
-        <div class="bar-label">
-          <span>${row.label}</span>
-          <span>${row.ppo.toFixed(1)}% / ${row.ours.toFixed(1)}%</span>
-        </div>
-        <div class="bars">
-          <div class="bar ppo" title="PPO"><span data-width="${row.ppo}"></span></div>
-          <div class="bar ours" title="WM-LOCO"><span data-width="${row.ours}"></span></div>
-        </div>
-      </div>`
-      )
-      .join("");
-  });
-}
-
-function animateBars(root) {
-  root.querySelectorAll(".bar > span[data-width]").forEach((bar) => {
-    const width = Number(bar.dataset.width);
-    requestAnimationFrame(() => {
-      bar.style.width = `${Math.max(width, width === 0 ? 0 : 2)}%`;
-    });
-  });
-}
-
 function setupNav() {
   const header = document.querySelector(".site-header");
   const nav = document.querySelector(".nav");
@@ -63,7 +7,6 @@ function setupNav() {
 
   const onScroll = () => {
     header.classList.toggle("is-scrolled", window.scrollY > 12);
-
     const y = window.scrollY + 96;
     let current = sections[0]?.id;
     for (const section of sections) {
@@ -94,33 +37,91 @@ function setupReveal() {
   const items = document.querySelectorAll(".reveal");
   if (!("IntersectionObserver" in window)) {
     items.forEach((el) => el.classList.add("is-visible"));
-    document.querySelectorAll(".bar-chart").forEach(animateBars);
     return;
   }
-
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add("is-visible");
-        if (entry.target.classList.contains("chart-card")) {
-          const chart = entry.target.querySelector(".bar-chart");
-          if (chart) animateBars(chart);
-        }
         io.unobserve(entry.target);
       });
     },
-    { threshold: 0.18 }
+    { threshold: 0.15 }
   );
-
   items.forEach((el) => io.observe(el));
+}
+
+/* Click a video or figure -> open it enlarged in an overlay instead of
+   playing / opening in place. Esc, the close button, or a click on the
+   backdrop closes it. */
+function setupLightbox() {
+  const box = document.getElementById("lightbox");
+  const stage = box?.querySelector(".lightbox-stage");
+  const closeBtn = box?.querySelector(".lightbox-close");
+  if (!box || !stage) return;
+  let lastFocus = null;
+
+  const open = (type, src, poster, label) => {
+    stage.innerHTML = "";
+    let el;
+    if (type === "video") {
+      el = document.createElement("video");
+      el.src = src;
+      if (poster) el.poster = poster;
+      el.controls = true;
+      el.autoplay = true;
+      el.playsInline = true;
+      el.loop = !/demo-v\d+/.test(src);
+    } else {
+      el = document.createElement("img");
+      el.src = src;
+      el.alt = label || "";
+    }
+    el.className = "lightbox-media";
+    stage.appendChild(el);
+    lastFocus = document.activeElement;
+    box.hidden = false;
+    document.body.classList.add("lb-lock");
+    requestAnimationFrame(() => box.classList.add("is-open"));
+    closeBtn?.focus({ preventScroll: true });
+    if (type === "video") el.play?.().catch(() => {});
+  };
+
+  const close = () => {
+    if (box.hidden) return;
+    const v = stage.querySelector("video");
+    if (v) v.pause();
+    box.classList.remove("is-open");
+    document.body.classList.remove("lb-lock");
+    setTimeout(() => {
+      box.hidden = true;
+      stage.innerHTML = "";
+    }, 200);
+    lastFocus?.focus?.({ preventScroll: true });
+  };
+
+  document.addEventListener("click", (e) => {
+    const trigger = e.target.closest("[data-lightbox]");
+    if (!trigger) return;
+    e.preventDefault();
+    const src = trigger.dataset.src || trigger.getAttribute("href");
+    open(trigger.dataset.lightbox, src, trigger.dataset.poster, trigger.getAttribute("aria-label"));
+  });
+
+  box.addEventListener("click", (e) => {
+    if (e.target === box || e.target === stage) close();
+  });
+  closeBtn?.addEventListener("click", close);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
 }
 
 function setupCopy() {
   const btn = document.querySelector("[data-copy]");
   const code = document.querySelector("#bibtex code");
   if (!btn || !code) return;
-
   btn.addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(code.textContent.trim());
@@ -136,7 +137,7 @@ function setupCopy() {
   });
 }
 
-renderCharts();
 setupNav();
 setupReveal();
+setupLightbox();
 setupCopy();

@@ -228,74 +228,58 @@
           <p class="media-caption">
             <span class="fig-tag">Table 1</span>
             Success rates (%) for four methods and four terrains. Mean is the arithmetic average of Easy, Medium, and
-            Hard; bold denotes the best simulation result in each row. GLAD uses global–local attention for terrain
-            encoding of a robot-centric elevation map; CReF combines cross-modal attention with recurrent fusion of depth
-            and proprioception. The PPO baseline shares the sensory inputs, rewards, proprioceptive encoder, adversarial
-            motion prior, MoE backbone, and training budget, but omits the world model and its auxiliary loss. Real
-            reports WM-LOCO hardware success at one fixed difficulty per terrain rather than separate tiers, over 10
-            trials per terrain class.
+            Hard; bold denotes the best simulation result in each row. Real reports WM-LOCO hardware success at one fixed
+            difficulty per terrain, over 10 trials per terrain class.
           </p>
         </div>
 
-        <div class="result-block reveal">
-          <h3>Baseline Comparisons</h3>
-          <p>
-            WM-LOCO is the only method whose mean success exceeds 90% on every terrain class. Its four-terrain mean is
-            94.8%, compared with 71.5% for GLAD and 77.6% for CReF; the PPO baseline records no successful trials on gaps,
-            stepping stones, and balance beams. On stairs, where PPO also succeeds, WM-LOCO produces more efficient and smoother
-            motion: stride length increases by 25.6% and pelvis acceleration decreases by 28.9% (mean relative changes
-            across the three tiers). On a combined
-            course that chains all four terrain classes in one episode, WM-LOCO achieves 95.4% success.
-          </p>
-        </div>
+        <div class="result-grid">
+          <article class="result-card reveal">
+            <h3>Baseline Comparisons</h3>
+            <p>WM-LOCO is the only method whose mean success exceeds 90% on every terrain class.</p>
+            <a class="result-media zoom" href="assets/fig-radar-v2.png" data-lightbox="image" aria-label="Enlarge Fig. 4"><img
+              src="assets/fig-radar-v2.png"
+              alt="Radar chart of success rates averaged across difficulty tiers for PPO, GLAD, CReF, and WM-LOCO on stairs, gaps, stepping stones, and balance beams"
+              width="1600" height="1292" loading="lazy" /></a>
+            <p class="media-caption"><span class="fig-tag">Fig. 4</span> Success rates averaged across difficulty tiers. PPO achieves 0% success on gaps, stepping stones, and balance beams.</p>
+          </article>
 
-        <figure class="figure-card result-figure reveal">
-          <a class="zoom" href="assets/fig-combined-course-v5.jpg" data-lightbox="image" aria-label="Enlarge Fig. 1(d)"><img src="assets/fig-combined-course-v5.jpg"
-            alt="Keyframes of WM-LOCO on a combined simulation course: stair ascent, stepping stones, gap crossing, narrow beam, and stair descent"
-            width="2400" height="664" loading="lazy" /></a>
-          <figcaption><span class="fig-tag">Fig. 1(d)</span> Combined course: stair ascent, stepping stones, a gap, a balance beam, and stair descent in one simulated episode.</figcaption>
-        </figure>
-
-        <div class="result-row reveal">
-          <div class="result-text">
+          <article class="result-card reveal">
             <h3>Ablation Study</h3>
-            <p>
-              The complete model achieves 98.6–99.6% success across the tested gap widths. Removing the world model reduces
-              success to 0% for every width from 0.4–0.5 m onward; removing the MoE backbone also produces near-total failure
-              beyond the smallest gap range, while removing the history encoder mainly impairs wider-gap traversal.
-            </p>
-          </div>
-          <figure class="figure-card">
-            <a class="zoom" href="assets/fig-ablation-gap-v5.png" data-lightbox="image" aria-label="Enlarge Fig. 5"><img src="assets/fig-ablation-gap-v5.png"
+            <p>Removing the world model reduces gap success to 0% for every width from 0.4–0.5 m onward.</p>
+            <a class="result-media zoom" href="assets/fig-ablation-gap-v5.png" data-lightbox="image" aria-label="Enlarge Fig. 5"><img
+              src="assets/fig-ablation-gap-v5.png"
               alt="Gap-traversal success versus gap width for the full model and for variants without the world model, history encoder, or MoE"
               width="1400" height="892" loading="lazy" /></a>
-            <figcaption><span class="fig-tag">Fig. 5</span> Gap-traversal success of the full model and of variants without the world model, history encoder, or MoE.</figcaption>
-          </figure>
-        </div>
+            <p class="media-caption"><span class="fig-tag">Fig. 5</span> Gap-traversal success of the full model and of variants without the world model, history encoder, or MoE.</p>
+          </article>
 
-        <div class="result-block reveal">
-          <h3>World-Model Validation</h3>
-          <p>
-            Given recorded actions, the world model predicts 15 updates (1.5 s) ahead without future observations. Its
-            predicted depth stays closer to the Isaac Lab measurements than controls that repeat the initial observation or
-            supply alternative actions, across the whole horizon. At 1.5 s, joint-position and joint-velocity errors remain
-            close to the current-observation reconstruction reference; at 1.0 s, reward prediction reaches 0.072 MAE with
-            0.887 correlation.
-          </p>
-          <figure class="figure-card">
-            <a class="zoom" href="assets/fig-wm-multistep-v5.png" data-lightbox="image" aria-label="Enlarge Fig. 3"><img src="assets/fig-wm-multistep-v5.png"
+          <article class="result-card result-card--wide reveal">
+            <h3>Combined Course</h3>
+            <p>One episode chaining all four terrain classes: 95.4% success in simulation.</p>
+            <a class="zoom" href="assets/fig-combined-course-v5.jpg" data-lightbox="image" aria-label="Enlarge Fig. 1(d)"><img
+              src="assets/fig-combined-course-v5.jpg"
+              alt="Keyframes of WM-LOCO on a combined simulation course: stair ascent, stepping stones, gap crossing, narrow beam, and stair descent"
+              width="2400" height="664" loading="lazy" /></a>
+            <p class="media-caption"><span class="fig-tag">Fig. 1(d)</span> Stair ascent, stepping stones, a gap, a balance beam, and stair descent in one simulated episode.</p>
+          </article>
+
+          <article class="result-card result-card--wide reveal">
+            <h3>World-Model Validation</h3>
+            <p>Given recorded actions, the world model predicts 15 updates (1.5 s) ahead without future observations.</p>
+            <a class="zoom" href="assets/fig-wm-multistep-v5.png" data-lightbox="image" aria-label="Enlarge Fig. 3"><img
+              src="assets/fig-wm-multistep-v5.png"
               alt="Multi-step world-model predictions on stepping stones: ground-truth and predicted depth sequences, depth prediction error, and proprioception prediction error over a 1.5 s horizon"
               width="1890" height="1047" loading="lazy" /></a>
-            <figcaption><span class="fig-tag">Fig. 3</span> Multi-step world-model predictions on stepping stones: (a) depth sequences; (b, c) depth and proprioceptive errors. Rollouts receive no future observations.</figcaption>
-          </figure>
+            <p class="media-caption"><span class="fig-tag">Fig. 3</span> Multi-step world-model predictions on stepping stones: (a) depth sequences; (b, c) depth and proprioceptive errors. Rollouts receive no future observations.</p>
+          </article>
         </div>
-
       </div>
     </section>
 
     <!-- ======================================================== CITATION -->
     <section class="section band" id="citation">
-      <div class="container narrow">
+      <div class="container">
         <div class="section-head">
           <p class="kicker">04</p>
           <h2>Citation</h2>
